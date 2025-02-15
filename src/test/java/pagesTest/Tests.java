@@ -20,10 +20,6 @@ public class Tests extends WebHooks {
                 .authorizeUser(userLogin, userPass)
                 .getProfile()
                 .getAttribute("title").contains(userLogin));
-        // код ниже делает тоже самое, только не в одну строку
-//        jiraMainPage.authorizeUser();
-//        check = jiraResultPage.getProfile().getAttribute("title");
-//        Assertions.assertTrue(check.contains("AT16"));
     }
 
     @Test
@@ -35,7 +31,7 @@ public class Tests extends WebHooks {
     }
 
     @Test
-    @DisplayName("Тест #3. Проверка количества задач") // !!!
+    @DisplayName("Тест #3. Проверка количества задач")
     public void checkTasksNumberTest() {
         jiraMainPage.authorizeUser(userLogin, userPass).openTestProject();
 
