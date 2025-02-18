@@ -85,6 +85,7 @@ public class JiraResultPage {
         businessProcess.shouldBe(visible, Duration.ofSeconds(15)).click();
         businessProcess.click();
         businessProcess.click();
+        businessProcess.click();
         readyStatus.shouldBe(visible, Duration.ofSeconds(15)).click();
     }
 

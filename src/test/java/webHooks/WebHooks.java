@@ -3,6 +3,8 @@ package webHooks;
 import com.codeborne.selenide.Browsers;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import io.cucumber.java.AfterAll;
+import io.cucumber.java.BeforeAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.PageLoadStrategy;
@@ -23,7 +25,6 @@ public class WebHooks {
 
     @AfterEach
     public void afterTest() {
-
         Selenide.closeWebDriver();
     }
 }
