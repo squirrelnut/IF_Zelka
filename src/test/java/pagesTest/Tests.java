@@ -53,7 +53,7 @@ public class Tests extends WebHooks {
     public void createNewTaskTest () {
         jiraMainPage.authorizeUser(userLogin, userPass).openTestProject();
         jiraResultPage.createNewBug();
+        jiraResultPage.openLastBug();
         jiraResultPage.makeStatusFinal();
-
     }
 }

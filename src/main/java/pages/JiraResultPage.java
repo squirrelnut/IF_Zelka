@@ -30,6 +30,7 @@ public class JiraResultPage {
     private final SelenideElement assignToMeButton = $x("//button[@id='assign-to-me-trigger']").as("Назначить на меня");
     private final SelenideElement createButton = $x("//input[@id='create-issue-submit']").as("Кнопка Создать в диалоге");
     private final SelenideElement filter = $x("//button[@id='subnav-trigger']").as("Кнопка Фильтра");
+    private final SelenideElement filter1 = $x("//div[@class='filter-content']//a[contains(@title, 'Мои открытые задачи')]").as("Мои открытые задачи");
     private final SelenideElement filter2 = $x("//ul[@class='aui-list-truncate']//a[text()='Мои открытые задачи']").as("пункт в Фильтре = Мои открытые задачи");
     private final SelenideElement inProgressStatus = $x("//a[@id='action_id_21']").as("Кнопка В работе");
     private final SelenideElement businessProcess = $x("//a[@id='opsbar-transitions_more']").as("Кнопка Бизнес-процесс");
@@ -62,12 +63,27 @@ public class JiraResultPage {
         }
     }
 
-    public void makeStatusFinal() {
+    public void openLastBug(){
         filter.click();
         filter2.click();
+    }
 
+    public void openLastBug2(){
+        filter1.click();
+    }
+
+
+    public void makeStatusFinal() {
         inProgressStatus.shouldBe(visible, Duration.ofSeconds(5)).click();
         businessProcess.shouldBe(visible, Duration.ofSeconds(5)).click();
+        businessProcess.click();
+        readyStatus.shouldBe(visible, Duration.ofSeconds(15)).click();
+    }
+
+    public void makeStatusFinal2() {
+        inProgressStatus.shouldBe(visible, Duration.ofSeconds(5)).click();
+        businessProcess.shouldBe(visible, Duration.ofSeconds(15)).click();
+        businessProcess.click();
         businessProcess.click();
         readyStatus.shouldBe(visible, Duration.ofSeconds(15)).click();
     }
@@ -79,6 +95,10 @@ public class JiraResultPage {
 
     public boolean checkLinkContainsText(String text) {
         return testProjectTitleLink.getAttribute("href").contains(text);
+    }
+
+    public void clickLink(SelenideElement element) {
+        element.click();
     }
 
     public void searchTaskByName(String nameTask) {
