@@ -2,14 +2,13 @@ package api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterModel {
     private Integer id;
     private String name;
     private String species;
-    private List<String> location;
+    private LocationCharacter location;
 
 
     public Integer getId() {
@@ -24,8 +23,12 @@ public class CharacterModel {
         return species;
     }
 
-    public List<String> getLocation() {
+    public LocationCharacter getLocation() {
         return location;
+    }
+
+    public void setLocation(LocationCharacter location) {
+        this.location = location;
     }
 }
 

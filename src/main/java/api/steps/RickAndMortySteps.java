@@ -1,5 +1,6 @@
 package api.steps;
 
+import api.models.CharacterModel;
 import api.specifications.RickAndMortySpecifications;
 import org.apache.http.HttpStatus;
 import utils.ConfigReader;
@@ -52,6 +53,37 @@ public class RickAndMortySteps {
                 .extract().body().jsonPath().get("species");
 
         return specie;
+    }
+
+    public CharacterModel getDataFromCharacter(int number) {
+        CharacterModel character =
+                given()
+                        .spec(RickAndMortySpecifications.baseRequestSpec())
+                        .when()
+                        .get(url + "api/character/" + number)
+                        .then().log().all()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().body().as(CharacterModel.class);
+
+        return character;
+    }
+
+    public void compareMortyAndCharacter(int lastCharacter, int mortyID) {
+        CharacterModel character = getDataFromCharacter(lastCharacter);
+        CharacterModel morty = getDataFromCharacter(mortyID);
+
+        if (morty.getSpecies().equals(character.getSpecies())) {
+            System.out.println("Расы совпадают");
+        } else {
+            System.out.println("Расы НЕ совпадают");
+        }
+
+        if (morty.getLocation().name.equals(character.getLocation().name)) {
+            System.out.println("Местонахождение совпадает");
+        } else {
+            System.out.println("Местонахождение НЕ совпадает");
+        }
+
     }
 
     // получение места
