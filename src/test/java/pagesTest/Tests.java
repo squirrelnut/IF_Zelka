@@ -5,13 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.JiraMainPage;
 import pages.JiraResultPage;
+import utils.ConfigReader;
 import webHooks.WebHooks;
 
 public class Tests extends WebHooks {
 
     private final JiraMainPage jiraMainPage = new JiraMainPage();
     private final JiraResultPage jiraResultPage = new JiraResultPage();
-    private String userLogin = "AT16", userPass = "Qwerty123";
+    private String userLogin = ConfigReader.getProperty("login");
+    private String userPass = ConfigReader.getProperty("pass");
 
     @Test
     @DisplayName("Тест #1. Аутентификация пользователя")
