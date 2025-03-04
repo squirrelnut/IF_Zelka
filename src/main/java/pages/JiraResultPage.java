@@ -3,12 +3,16 @@ package pages;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
 
 
 public class JiraResultPage {
@@ -35,7 +39,9 @@ public class JiraResultPage {
     private final SelenideElement businessProcess = $x("//a[@id='opsbar-transitions_more']").as("Кнопка Бизнес-процесс");
     private final SelenideElement readyStatus = $x("//span[text()='Выполнено']").as("кнопка Выполнено");
 
+    @Step("Создать новую задачу")
     public void createNewBug() {
+        Allure.step("Создаем новую задачу");
         createLink.click();
         listTypes.click();
 
@@ -49,6 +55,7 @@ public class JiraResultPage {
     }
 
     public void selectBugInTypeTask() {
+        Allure.step("Выбираем тип задачи = Ошибка ");
         String str = selectedElement.getAttribute("data-suggestions");
         str = str.substring(0, str.indexOf("true"));
         str = str.substring(str.lastIndexOf("{"));
@@ -62,33 +69,49 @@ public class JiraResultPage {
         }
     }
 
+    @Step("Перевести задачу в финальный статус")
     public void makeStatusFinal() {
+        Allure.step("Переводим баг в финальный статус");
         filter.click();
         filter2.click();
 
         inProgressStatus.shouldBe(visible, Duration.ofSeconds(5)).click();
         businessProcess.shouldBe(visible, Duration.ofSeconds(5)).click();
-        businessProcess.click();
         readyStatus.shouldBe(visible, Duration.ofSeconds(15)).click();
     }
 
     public void openTestProject() {
+        Allure.step("Открываем проект Тест");
         projectsLink.click();
         testProjectLink.click();
     }
 
+    @Step("Проверка ссылки на проект Тест")
     public boolean checkLinkContainsText(String text) {
+        Allure.step("Проверяем ссылку проекта Тест");
         return testProjectTitleLink.getAttribute("href").contains(text);
     }
 
     public void searchTaskByName(String nameTask) {
+        Allure.step("Поиск задачи по имени " + nameTask);
         searchForm.setValue(nameTask).pressEnter();
     }
 
+    public void checkFields() {
+        String status = getTaskStatus().getText();
+        String version = getTaskVersion().getText();
+
+        Allure.step("Статус = " + status);
+        Allure.step("Версия = " + status);
+        Assertions.assertEquals("СДЕЛАТЬ", status);
+        Assertions.assertEquals("Version 2.0", version);
+    }
+
     public int getAllTasksNumber() {
+
         String str = allTasks.getText();
         str = str.substring(str.indexOf('з')+2);
-
+        Allure.step("Счетчик задач = " + str);
         return Integer.parseInt(str);
     }
 
@@ -97,8 +120,9 @@ public class JiraResultPage {
         createNewBug();
         Selenide.refresh();
         int counter2 = getAllTasksNumber();
-
-        return counter2-counter1 == 1;
+        int difference = counter2 - counter1;
+        Allure.step("Счетчик задач увеличился на " + difference);
+        return difference == 1;
     }
 
     public SelenideElement getProfile() {
