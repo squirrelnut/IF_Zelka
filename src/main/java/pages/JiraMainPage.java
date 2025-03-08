@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class JiraMainPage {
-    private final SelenideElement nameForm = $x("//input[@id='login-form-username']").as("Поле ввода имени");
+    private final SelenideElement nameForm = $x("//input[@id='login-form-username111']").as("Поле ввода имени");
     private final SelenideElement passForm = $x("//input[@id='login-form-password']").as("Поле ввода пароля");
     private final SelenideElement enterButton = $x("//input[@id='login']").as("Кнопка Войти");
 
