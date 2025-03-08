@@ -3,6 +3,8 @@ package tests;
 import api.models.CharacterModel;
 import api.specifications.RickAndMortySpecifications;
 import api.steps.RickAndMortySteps;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +18,7 @@ public class RickAndMortyTests {
     public void setUp() {
         RestAssured.requestSpecification = RickAndMortySpecifications.baseRequestSpec();
         RestAssured.responseSpecification = RickAndMortySpecifications.baseResponseSpecSuccess();
+        SelenideLogger.addListener("AllureListener", new AllureSelenide().screenshots(true).savePageSource(true));
     }
 
     @Test
