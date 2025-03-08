@@ -72,18 +72,17 @@ public class RickAndMortySteps {
         CharacterModel character = getDataFromCharacter(lastCharacter);
         CharacterModel morty = getDataFromCharacter(mortyID);
 
-        if (morty.getSpecies().equals(character.getSpecies())) {
-            System.out.println("Расы совпадают");
-        } else {
-            System.out.println("Расы НЕ совпадают");
+        System.out.println("Расы " + checkField(morty.getSpecies(), character.getSpecies()));
+        System.out.println("Локации " + checkField(morty.getLocation().name, character.getLocation().name));
+    }
+
+    private String checkField(String str1, String str2) {
+        String answeer = "не совпадают";
+        if (str1.equals(str2)) {
+            answeer = "совпадают";
         }
 
-        if (morty.getLocation().name.equals(character.getLocation().name)) {
-            System.out.println("Местонахождение совпадает");
-        } else {
-            System.out.println("Местонахождение НЕ совпадает");
-        }
-
+        return answeer;
     }
 
     // получение места

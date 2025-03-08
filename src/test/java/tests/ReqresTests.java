@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.ConfigReader;
-import utils.JsonReader;
+import utils.FileReader;
 
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 
+@DisplayName("Набор тестов для сайта reqres.in")
 public class ReqresTests {
 
     private static final String url = ConfigReader.getProperty("urlReqres");
@@ -19,7 +20,7 @@ public class ReqresTests {
     @Test
     @DisplayName("Тест #1. Создать пользователя на сайте reqres.in")
     public void createUserTest() throws IOException {
-        UserModel user = JsonReader.readJsonFile();
+        UserModel user = FileReader.readJsonFile();
         user.setName("Tomato");
         user.setJob("Eat maket");
 

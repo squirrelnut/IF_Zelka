@@ -4,15 +4,16 @@ import api.models.CharacterModel;
 import api.specifications.RickAndMortySpecifications;
 import api.steps.RickAndMortySteps;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Набор тестов для сайта rickandmortyapi.com")
 public class RickAndMortyTests {
     RickAndMortySteps step = new RickAndMortySteps();
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setUp() {
         RestAssured.requestSpecification = RickAndMortySpecifications.baseRequestSpec();
         RestAssured.responseSpecification = RickAndMortySpecifications.baseResponseSpecSuccess();
     }
