@@ -2,6 +2,7 @@ package api.steps;
 
 import api.models.CharacterModel;
 import api.specifications.RickAndMortySpecifications;
+import io.qameta.allure.Allure;
 import org.apache.http.HttpStatus;
 import utils.ConfigReader;
 
@@ -16,6 +17,7 @@ public class RickAndMortySteps {
     private static final String url = ConfigReader.getProperty("url");
 
     public int getLastEpisodeByCharacter(String nameCharacter) {
+        Allure.step("Отправили запрос последнего эпизода с Морти");
         List<String> episodes = given()
                 .spec(RickAndMortySpecifications.baseRequestSpec())
                 .when()
@@ -29,6 +31,7 @@ public class RickAndMortySteps {
     }
 
     public int getLastCharacterFromEpisode(int number) {
+        Allure.step("Отправили запрос о последнем персонаже");
         List<String> characters = given()
                 .spec(RickAndMortySpecifications.baseRequestSpec())
                 .when()
@@ -41,39 +44,24 @@ public class RickAndMortySteps {
         return getLastNumberFromList(characters);
     }
 
-    // получение расы
-    public String getSpecieFromCharacter(int number) {
-        String specie = given()
+    public CharacterModel getDataFromCharacter(int number) {
+        Allure.step("Отправили запрос о расе и локации персонажа с id = " + number);
+
+        return given()
                 .spec(RickAndMortySpecifications.baseRequestSpec())
                 .when()
                 .get(url + "api/character/" + number)
-                .then()
-                .assertThat()
+                .then().log().all()
                 .statusCode(HttpStatus.SC_OK)
-                .extract().body().jsonPath().get("species");
-
-        return specie;
+                .extract().body().as(CharacterModel.class);
     }
 
-    public CharacterModel getDataFromCharacter(int number) {
-        CharacterModel character =
-                given()
-                        .spec(RickAndMortySpecifications.baseRequestSpec())
-                        .when()
-                        .get(url + "api/character/" + number)
-                        .then().log().all()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().body().as(CharacterModel.class);
-
-        return character;
-    }
-
-    public void compareMortyAndCharacter(int lastCharacter, int mortyID) {
-        CharacterModel character = getDataFromCharacter(lastCharacter);
-        CharacterModel morty = getDataFromCharacter(mortyID);
-
-        System.out.println("Расы " + checkField(morty.getSpecies(), character.getSpecies()));
-        System.out.println("Локации " + checkField(morty.getLocation().name, character.getLocation().name));
+    public void compareMortyAndCharacter(CharacterModel character, CharacterModel morty) {
+        Allure.step("Сравниваем данные персонажей");
+        Allure.step("Раса Морти = " + morty.getSpecies());
+        Allure.step("Локация Морти = " + morty.getLocation().name);
+        Allure.step("Расы " + checkField(morty.getSpecies(), character.getSpecies()));
+        Allure.step("Локации " + checkField(morty.getLocation().name, character.getLocation().name));
     }
 
     private String checkField(String str1, String str2) {
@@ -85,21 +73,8 @@ public class RickAndMortySteps {
         return answeer;
     }
 
-    // получение места
-    public String getLocationFromCharacter(int number) {
-        String location = given()
-                .spec(RickAndMortySpecifications.baseRequestSpec())
-                .when()
-                .get(url + "api/character/" + number)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().body().jsonPath().get("location.name");
-
-        return location;
-    }
-
     public int getIDByCharacterName(String nameCharacter) {
+        Allure.step("Получаю id персонажа по имени " + nameCharacter);
         return given()
                 .spec(RickAndMortySpecifications.baseRequestSpec())
                 .when()
@@ -110,7 +85,6 @@ public class RickAndMortySteps {
                 .extract().body().jsonPath().get("results[0].id");
     }
 
-    // вспомогательные методы
     private int getLastNumberFromList(List<String> links) {
         ArrayList<Integer> numbers = new ArrayList<>();
 
@@ -130,7 +104,7 @@ public class RickAndMortySteps {
             }
         }
 
-        Collections.sort(numbers, Collections.reverseOrder());
+        numbers.sort(Collections.reverseOrder());
         return numbers.get(0);
     }
 }

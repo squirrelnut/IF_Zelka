@@ -113,7 +113,6 @@
             <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>7.20.1</version>
         </dependency>
-
     </dependencies>
 
     <build>
